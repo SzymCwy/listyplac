@@ -52,19 +52,22 @@ class LPProgram:
 
     def define_name(self):
         for i in range(0, len(self.table), 2):
-            name = self.table[i][1]
-            surname = self.table[i + 1][1]
+            first_row = self.table[i]
+            second_row = self.table[i + 1]
+            name = first_row[1]
+            surname = second_row[1]
             name_surname = f'{name} {surname}'  # pozyskanie imienia i nazwiska z dwóch różnych wierszy
             for j in range(2):
-                name = np.delete(name, 0)  # usuwanie 2 pierwszych komórek w wierszu zawierających niepotrzebne dane
+                first_row = np.delete(first_row, 0)  # usuwanie 2 pierwszych komórek w wierszu zawierających niepotrzebne dane
             name_array = np.array([name_surname])  # zmienienie na tablice, aby później użyć funkcji concentrate
             for j in range(self.nr_of_days + 1, len(name), 1):
-                name = np.delete(name, self.nr_of_days + 1)  # usuwane komórki z danymi wychodzącymi poza zakres
+                first_row = np.delete(first_row, self.nr_of_days + 1)  # usuwane komórki z danymi wychodzącymi poza zakres
                 # miesiąca
-            name = np.concatenate((name_array, name), axis=0)
-            if name[1] != "" and name[2] != "" and name[3] != "" and name[4] != "":  # zabezpiecznie przed złymi danymi
+            first_row = np.concatenate((name_array, first_row), axis=0)
+            if first_row[1] != "" and first_row[2] != "" and first_row[3] != "" and first_row[4] != "":
+                # zabezpiecznie przed złymi danymi
                 self.worker_table.append(
-                    name.tolist())  # tworzenie nowej tablicy zawierającej przygotowane dane ka zdego pracownika
+                    first_row.tolist())  # tworzenie nowej tablicy zawierającej przygotowane dane ka zdego pracownika
 
     def weekend_days_to_array(self):  # tworzenie tablicy zawierającej daty, które przypadają na sobote
         for i in range(7):
